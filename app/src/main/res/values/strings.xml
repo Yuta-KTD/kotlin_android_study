@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">HelloEvent</string>
     <string name="btnCurrent">現在時刻</string>
+    <string name="greet">こんにちは、%1$sさん！</string>
 </resources>
