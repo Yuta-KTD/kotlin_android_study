@@ -2,4 +2,10 @@
     <string name="app_name">HelloEvent</string>
     <string name="btnCurrent">現在時刻</string>
     <string name="greet">こんにちは、%1$sさん！</string>
+    <string name="spnOs_prompt">OSを選択してください</string>
+    <string-array name="spnOs">
+        <item>Mac</item>
+        <item>Windows</item>
+        <item>Linux</item>
+    </string-array>
 </resources>

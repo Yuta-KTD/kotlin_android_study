@@ -2,29 +2,27 @@ package com.example.helloevent
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.SeekBar
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import com.example.helloevent.databinding.ActivityMainBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        val txtResult = findViewById<TextView>(R.id.txtResult)
-        outState.putString("txtResult", txtResult.text.toString())
-    }
 
     override fun onRestoreInstanceState(
         savedInstanceState: Bundle,
@@ -44,21 +42,6 @@ class MainActivity : AppCompatActivity() {
             val toast = Toast.makeText(this, today, Toast.LENGTH_LONG)
             toast.show()
             Log.d("CurrentTime", today)
-        }
-        val imgButton = findViewById<ImageButton>(R.id.imgButton)
-        val editName = findViewById<EditText>(R.id.editName)
-        val textResult = findViewById<TextView>(R.id.textResult)
-        imgButton.setOnClickListener {
-            textResult.text = getString(R.string.greet, editName.text)
-        }
-        val checkBox = findViewById<CheckBox>(R.id.checkBox)
-        // チェックボックスをコード上から変更する場合もあるので、setOnCheckedChangeListenerを使う
-        // クリックだけだったら、setOnClickListenerで良い
-        checkBox.setOnCheckedChangeListener { _, isChecked ->
-            Toast.makeText(this@MainActivity,
-                if (isChecked) "メール送信ON" else "メール送信OFF",
-                Toast.LENGTH_SHORT
-            ).show()
         }
         // RadioGroupを取得する
         val radioGroup = findViewById<RadioGroup>(R.id.radioGroup)
@@ -109,5 +92,39 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
         })
+        // スピナーを取得する
+        var isFirstSelection = true  // フラグを初期化
+
+        val spinner = findViewById<Spinner>(R.id.spinner)
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (!isFirstSelection) {
+                    Toast.makeText(this@MainActivity, "選択項目: ${(parent as Spinner).selectedItem}", Toast.LENGTH_SHORT).show()
+                } else {
+                    isFirstSelection = false  // 初回の選択イベントを無視
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+        createSpinner()
+    }
+    // スピナーに項目をセットするメソッド
+    private fun createSpinner() {
+        val list = mutableListOf<String>()
+        val format = SimpleDateFormat("yyyy/MM/dd", Locale.JAPAN)
+        val calendar = Calendar.getInstance()
+        // 今日から1週間分の日付をリストに追加する
+        for (i in 0..6) {
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + i)
+            list.add(format.format(calendar.time))
+        }
+        // 配列をウィジェットに渡す準備
+        val calenderSpinner = findViewById<Spinner>(R.id.dateSpinner)
+        calenderSpinner.adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            list,
+        )
     }
 }
