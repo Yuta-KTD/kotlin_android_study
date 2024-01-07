@@ -6,6 +6,7 @@ import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
@@ -46,6 +47,15 @@ class MainActivity : AppCompatActivity() {
         val textResult = findViewById<TextView>(R.id.textResult)
         imgButton.setOnClickListener {
             textResult.text = getString(R.string.greet, editName.text)
+        }
+        val checkBox = findViewById<CheckBox>(R.id.checkBox)
+        // チェックボックスをコード上から変更する場合もあるので、setOnCheckedChangeListenerを使う
+        // クリックだけだったら、setOnClickListenerで良い
+        checkBox.setOnCheckedChangeListener { _, isChecked ->
+            Toast.makeText(this@MainActivity,
+                if (isChecked) "メール送信ON" else "メール送信OFF",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 }
