@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.example.helloevent.databinding.ActivityMainBinding
@@ -56,6 +58,19 @@ class MainActivity : AppCompatActivity() {
                 if (isChecked) "メール送信ON" else "メール送信OFF",
                 Toast.LENGTH_SHORT
             ).show()
+        }
+        // RadioGroupを取得する
+        val radioGroup = findViewById<RadioGroup>(R.id.radioGroup)
+        // ラジオボタンの選択状態が変更された時のリスナーを設定する
+        radioGroup.setOnCheckedChangeListener{ group, checkedId ->
+            // 選択されたラジオボタンのIDから、選択されたラジオボタンを取得する
+            val radio = group.findViewById<RadioButton>(checkedId)
+            // トーストで選択されたラジオボタンのテキストを表示する
+            Toast.makeText(
+                this@MainActivity,
+                String.format("選択されたラジオボタンは%sです", radio.text),
+                Toast.LENGTH_SHORT,
+                ).show()
         }
     }
 }
