@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import com.example.helloevent.databinding.ActivityMainBinding
@@ -72,5 +73,41 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT,
                 ).show()
         }
+        // シークバーを取得する
+        val seekBar = findViewById<SeekBar>(R.id.seekBar)
+        // シークバーの値が変更された時のリスナーを設定する
+        seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            // シークバーの値が変更された時に呼ばれる
+            override fun onProgressChanged(
+                seekBar: SeekBar?,
+                progress: Int,
+                fromUser: Boolean,
+            ) {
+                // トーストでシークバーの値を表示する
+                // ここで表示しちゃうと、シークバーを動かすたびにトーストが表示されるので、邪魔
+//                Toast.makeText(
+//                    this@MainActivity,
+//                    String.format("シークバーの値は%dです", progress),
+//                    Toast.LENGTH_SHORT,
+//                ).show()
+            }
+            // シークバーのつまみに触れた時に呼ばれる
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+            // シークバーのつまみを離した時に呼ばれる
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                val current = if (seekBar?.progress != null) {
+                    (seekBar.progress - 10) * 10
+                } else {
+                    0
+                }
+                // トーストでシークバーの値を表示する
+                Toast.makeText(
+                    this@MainActivity,
+                    String.format("シークバーの値は%dです", current),
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+        })
     }
 }
