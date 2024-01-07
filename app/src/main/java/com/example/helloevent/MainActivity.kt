@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.RatingBar
 import android.widget.SeekBar
 import android.widget.Spinner
 import android.widget.TextView
@@ -108,6 +109,18 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
         createSpinner()
+        // レーティングバーを取得
+        val ratingBar = findViewById<RatingBar>(R.id.ratingBar)
+        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            // 代替テキストを設定する
+            ratingBar.contentDescription = rating.toString()
+            // トーストでレーティングバーの値を表示する
+            Toast.makeText(
+                this@MainActivity,
+                String.format("レーティングバーの値は%.1fです", rating),
+                Toast.LENGTH_SHORT,
+            ).show()
+        }
     }
     // スピナーに項目をセットするメソッド
     private fun createSpinner() {
